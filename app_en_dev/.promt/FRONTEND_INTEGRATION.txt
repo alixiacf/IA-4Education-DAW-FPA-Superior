@@ -1,0 +1,234 @@
+# Frontend Integration Guide
+
+Este documento proporciona las instrucciones necesarias para que un desarrollador de frontend pueda conectar su aplicación con el backend de RAG para PDFs.
+
+## Descripción General del Sistema
+
+El sistema está compuesto por los siguientes componentes:
+
+1. **Ollama**: Servicio LLM que ejecuta el modelo de lenguaje localmente
+2. **ChromaDB**: Base de datos vectorial para almacenar embeddings de documentos
+3. **Backend Express**: API REST que gestiona la carga de PDFs, RAG y comunicación con el LLM
+4. **Frontend**: Interfaz de usuario que se comunicará con el backend
+
+## Endpoints de la API REST
+
+### 1. Obtener Modelos Disponibles
+
+```
+GET http://localhost:3000/models
+```
+
+**Respuesta**:
+```json
+{
+  "models": [
+    {
+      "name": "gemma2",
+      "modified_at": "2023-12-15T21:05:35.86403061Z",
+      "size": 4804954048
+    },
+    // Otros modelos disponibles...
+  ]
+}
+```
+
+### 2. Cargar un Documento PDF
+
+```
+POST http://localhost:3000/upload-pdf
+```
+
+**Headers**:
+- Content-Type: multipart/form-data
+
+**Body**:
+- Key: pdf
+- Value: [archivo PDF]
+
+**Respuesta**:
+```json
+{
+  "success": true,
+  "message": "PDF processed successfully",
+  "filename": "documento.pdf",
+  "chunks": 15
+}
+```
+
+### 3. Obtener Documentos Cargados
+
+```
+GET http://localhost:3000/documents
+```
+
+**Respuesta**:
+```json
+[
+  {
+    "name": "documento1.pdf",
+    "chunks": 15
+  },
+  {
+    "name": "documento2.pdf",
+    "chunks": 23
+  }
+]
+```
+
+### 4. Consultar con RAG
+
+```
+POST http://localhost:3000/rag-chat
+```
+
+**Headers**:
+- Content-Type: application/json
+
+**Body**:
+```json
+{
+  "query": "¿Qué información contiene este documento?",
+  "model": "gemma2",
+  "stream": false,
+  "maxResults": 5
+}
+```
+
+**Respuesta**:
+```json
+{
+  "response": "Este documento contiene información sobre...",
+  "context": {
+    "sources": ["documento1.pdf", "documento2.pdf"],
+    "count": 3
+  }
+}
+```
+
+### 5. Chat Estándar (sin RAG)
+
+```
+POST http://localhost:3000/chat
+```
+
+**Headers**:
+- Content-Type: application/json
+
+**Body**:
+```json
+{
+  "model": "gemma2",
+  "messages": [
+    { "role": "user", "content": "Hola, ¿cómo estás?" }
+  ],
+  "stream": false
+}
+```
+
+**Respuesta**:
+```json
+{
+  "response": "Hola, estoy bien. ¿En qué puedo ayudarte hoy?"
+}
+```
+
+## Streaming de Respuestas
+
+Para implementar streaming (respuestas en tiempo real), puedes usar el siguiente enfoque:
+
+1. Establece `stream: true` en las peticiones a `/rag-chat` o `/chat`
+2. La respuesta será un flujo de eventos Server-Sent Events (SSE)
+3. Cada evento tendrá el formato: `data: {"message": {"content": "fragmento de texto"}}`
+
+Ejemplo de código para streaming:
+
+```javascript
+async function streamChatResponse(query, model) {
+  const response = await fetch('http://localhost:3000/rag-chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      model,
+      stream: true
+    }),
+  });
+
+  const reader = response.body.getReader();
+  let accumulatedContent = '';
+  
+  function processStream() {
+    return reader.read().then(({ done, value }) => {
+      if (done) return;
+      
+      const chunk = new TextDecoder().decode(value);
+      const lines = chunk.split('\n');
+      
+      lines.forEach(line => {
+        if (line.startsWith('data: ')) {
+          try {
+            const data = JSON.parse(line.substring(6));
+            if (data.message && data.message.content) {
+              accumulatedContent += data.message.content;
+              updateUI(accumulatedContent);
+            }
+          } catch (error) {
+            console.error("Error parsing stream data:", error);
+          }
+        }
+      });
+      
+      return processStream();
+    });
+  }
+  
+  return processStream();
+}
+```
+
+## Gestión de Archivos
+
+El sistema almacena los archivos PDF y sus embeddings en el servidor. No es necesario almacenar los PDFs en el frontend, solo enviarlos al servidor.
+
+## Visualización Recomendada
+
+Se recomienda una interfaz con:
+
+1. **Panel de Carga**: Área para cargar documentos PDF con indicador de progreso
+2. **Lista de Documentos**: Visualización de los documentos cargados y disponibles para consulta
+3. **Selector de Modelo**: Dropdown para seleccionar el modelo a utilizar
+4. **Chat Interface**: Área de chat con historial de mensajes y entrada para nuevas consultas
+5. **Indicadores de Fuente**: Para cada respuesta, mostrar las fuentes de documentos utilizadas
+6. **Modo Streaming**: Implementar visualización en tiempo real de las respuestas
+7. **Formateo de Respuestas**: Soporte para markdown, código y otros formatos en las respuestas
+
+## Consideraciones de UX
+
+1. Mostrar indicadores de carga mientras se procesan los documentos
+2. Informar al usuario cuando un documento se ha cargado y procesado correctamente
+3. Proporcionar retroalimentación visual cuando se están generando respuestas
+4. Permitir al usuario ver qué partes del documento se utilizaron para generar una respuesta
+5. Ofrecer opciones para ajustar parámetros como `maxResults` para controlar la cantidad de contexto
+
+## Librerías Recomendadas
+
+- **Gestión de Estado**: React Context, Redux o similar
+- **UI Components**: Material-UI, Tailwind CSS o similar
+- **HTTP Client**: Axios o fetch API
+- **Markdown Rendering**: marked.js
+- **Syntax Highlighting**: highlight.js
+- **Sanitization**: DOMPurify
+
+## Ejemplo de Flujo de Usuario
+
+1. Usuario carga un PDF
+2. Sistema procesa el PDF y muestra confirmación
+3. Usuario hace una pregunta sobre el contenido del PDF
+4. Sistema busca en el documento, recupera chunks relevantes y genera una respuesta
+5. Frontend muestra la respuesta con indicación de las fuentes utilizadas
+6. Usuario puede hacer más preguntas o cargar más documentos
+
+Con estas indicaciones, el equipo de frontend debería tener toda la información necesaria para integrar su aplicación con el backend RAG para PDFs.

@@ -1,0 +1,81 @@
+Aquí te dejo un conjunto de instrucciones precisas, paso a paso, para montar la arquitectura que necesitas:
+
+Estructura del proyecto
+Organiza el repositorio en tres carpetas principales:
+
+/ollama: Aquí usarás el contenedor que ejecuta el modelo (utilizando la imagen gemma2:latest).
+/backend: Contendrá el código Node.js (por ejemplo, basándote en el contenido de 1.Instrucciones.txt) que implemente los endpoints para RAG sobre PDFs y la comunicación con Ollama.
+/frontend: Incluirá los archivos estáticos (HTML, CSS, JS) para la interfaz.
+Servicio Ollama
+Utiliza la imagen Docker preconstruida para Ollama con el modelo gemma2:latest. Configura el contenedor para que escuche, por ejemplo, en el puerto 11434.
+
+Servicio Backend
+
+Dockerfile (backend/Dockerfile):
+Usa una imagen base de Node.js, copia el código (incluyendo el server.js, package.json y demás archivos), instala las dependencias y expone el puerto (ej. 3000).
+dockerfile
+Copiar
+FROM node:14-alpine
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]
+Funcionalidad RAG:
+Integra en el backend un módulo para procesar PDFs (por ejemplo, usando librerías como pdf-parse) que extraiga texto, luego genera embeddings (con la librería de tu elección o incluso llamando a Ollama para la generación) y realiza la búsqueda semántica. Puedes reutilizar funciones y estilos definidos en la guía 1.Instrucciones.txt.
+Servicio Frontend
+
+Dockerfile (frontend/Dockerfile):
+Para el frontend, puedes usar un contenedor basado en Nginx para servir archivos estáticos.
+dockerfile
+Copiar
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
+Asegúrate de que los archivos (index.html, styles.css, script.js y las librerías adicionales) estén en la carpeta.
+Archivo docker-compose.yml
+Crea un docker-compose.yml en la raíz del proyecto para levantar los tres servicios juntos. Por ejemplo:
+
+yaml
+Copiar
+version: "3.8"
+services:
+  ollama:
+    image: ollama/gemma2:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ollama
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+Con este archivo, podrás levantar todo con:
+
+bash
+Copiar
+docker-compose up --build
+Integración RAG sobre PDFs
+En el backend, añade endpoints que:
+
+Reciban un PDF y extraigan su contenido (por ejemplo, con pdf-parse).
+Generen embeddings del contenido (puedes usar una librería o incluso llamar al servicio de Ollama si se adapta).
+Realicen búsquedas semánticas en el contenido para obtener respuestas relevantes (RAG) antes de comunicarse con el modelo en Ollama.
+Guía 1.Instrucciones.txt
+Proporciona a tu modelo de IA la guía (1.Instrucciones.txt) que contiene funciones y estilos reutilizables. Aunque esa guía no implementa RAG ni docker, el modelo puede extraer ideas para la estructura y el estilo de código.
+
+Con estos pasos tendrás una solución dockerizada con tres contenedores independientes: uno para el modelo Ollama, otro para el backend que maneje RAG sobre PDFs y se comunique con Ollama, y uno para el frontend. ¡Espero que te sea útil y cualquier duda, aquí estamos!

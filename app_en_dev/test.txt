@@ -1,0 +1,68 @@
+ Para instalar Ollama usando Docker sin necesidad de reiniciar el sistema, puedes seguir estos pasos:
+
+Asegúrate de tener Docker instalado en tu sistema. Si no lo tienes, instálalo siguiendo las instrucciones oficiales para tu sistema operativo1.
+
+Abre una terminal y ejecuta el siguiente comando para descargar e iniciar el contenedor de Ollama:
+
+bash
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+Este comando hará lo siguiente5:
+
+Descargará la imagen de Ollama si no está presente localmente
+
+Creará un volumen llamado "ollama" para persistir los datos
+
+Expondrá el puerto 11434 para acceder a la API de Ollama
+
+Nombrará el contenedor como "ollama"
+
+Ejecutará el contenedor en segundo plano
+
+Verifica que Ollama esté funcionando correctamente ejecutando:
+
+bash
+docker logs ollama
+Para utilizar Ollama, puedes ejecutar comandos directamente en el contenedor. Por ejemplo, para descargar un modelo:
+
+bash
+docker exec -it ollama ollama pull llama2
+Para interactuar con el modelo, puedes usar:
+
+bash
+docker exec -it ollama ollama run llama2
+
+Para comunicarte con el modelo de Ollama y obtener una respuesta, puedes utilizar tanto curl desde la línea de comandos como una interfaz web. Aquí te explico ambas opciones:
+
+Usando curl
+Para hacer una consulta al modelo usando curl, puedes ejecutar el siguiente comando en tu terminal:
+
+bash
+curl http://localhost:11434/api/generate -d '{
+  "model": "gemma",
+  "prompt": "muy brevemente, dime la diferencia entre un cometa y un meteoro",
+  "stream": false
+}'
+Este comando enviará una solicitud HTTP POST a la API de Ollama1. Aquí están los componentes principales:
+
+http://localhost:11434/api/generate: Es la URL de la API de Ollama para generar texto.
+
+"model": "gemma": Especifica el modelo a utilizar, en este caso Gemma.
+
+"prompt": Es la pregunta o instrucción que quieres que el modelo responda.
+
+"stream": false: Indica que quieres recibir la respuesta completa de una vez, no en streaming.
+
+Usando una interfaz web
+Para una experiencia más amigable, puedes utilizar Ollama-WebUI, que proporciona una interfaz similar a ChatGPT en tu navegador3. Para configurarlo:
+
+Asegúrate de tener Docker instalado.
+
+Ejecuta el siguiente comando para iniciar Ollama-WebUI:
+
+bash
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v ollama-webui:/app/backend/data --name ollama-webui ghcr.io/ollama-webui/ollama-webui:main
+Abre tu navegador y ve a http://localhost:3000.
+
+Desde esta interfaz web, podrás interactuar con los modelos de Ollama de manera más intuitiva, similar a como lo harías con ChatGPT.
+
+Recuerda que para ambos métodos, necesitas tener Ollama instalado y ejecutándose en tu sistema local
