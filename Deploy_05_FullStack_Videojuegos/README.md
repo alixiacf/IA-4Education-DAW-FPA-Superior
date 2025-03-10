@@ -1,153 +1,116 @@
+# GameRecommender - Video Games Library and Recommendation System
 
-# Proyecto de API con Express y Mongoose
-# Contenedores docker
+A full-stack web application for users to register video games they've played and receive personalized recommendations based on their gaming preferences.
 
-Este proyecto utiliza Express para crear una API RESTful y Mongoose para interactuar con una base de datos MongoDB.
-# README
+## Project Overview
 
-Esta guía explica cómo ejecutar una aplicación con **Docker Compose**.
+GameRecommender is a microservices-based application that allows users to:
 
-## Requisitos Previos
-- Docker instalado y en ejecución.
-- Docker Compose instalado (en muchos sistemas viene incluido con Docker Desktop).
+- Create a personal profile and maintain a library of video games they've played
+- Filter and search through a catalog of video games by tags (genres)
+- Receive personalized game recommendations based on their gaming preferences
+- Explore new games similar to ones they've already enjoyed
 
----
+## Architecture
 
-## 1. Clonar el Repositorio
+The application follows a microservices architecture with three main components:
 
-1. Abre tu terminal y navega hasta la carpeta deseada.
-2. Ejecuta. Sustituye el usuario y el proyecto por el del repositorio:
-   ```bash
-   git clone https://github.com/alixiacf/U3_1.git
-   ``` 
-   
-Entra en la carpeta del proyecto. Sustituye mi-proyecto por el nombre que tiene el repositorio:
-   ```bash
-cd mi-proyecto
-   ``` 
-### 2. Revisar docker-compose.yml
-El archivo docker-compose.yml describe la configuración de tu aplicación y sus servicios. Por ejemplo:
-   ```bash
-version: '3'
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
+### Frontend
+- Built with React, TypeScript, and Vite
+- Uses Tailwind CSS for styling
+- Implements a responsive, component-based UI
+- Communicates with the backend through RESTful API calls
 
-  db:
-    image: mongo
-    ports:
-      - "27017:27017"
+### Backend
+- Node.js with Express framework
+- RESTful API for user and game management
+- Game recommendation engine based on tag similarity
+- Database connection management
+
+### Database
+- MongoDB for data persistence
+- Stores user profiles, game libraries, and game catalog
+- Supports complex queries for recommendation features
+
+## Key Features
+
+1. **User Management**
+   - Simple user registration without password requirements
+   - Personal game library management
+
+2. **Game Catalog**
+   - Pre-populated catalog of games with titles, descriptions, images, and tags
+   - Game filtering by genre tags
+
+3. **Recommendation System**
+   - Personalized recommendations based on user's favorite genres
+   - Algorithm that identifies preferred game types
+
+4. **Tag-Based Organization**
+   - Color-coded tag system for easy genre identification
+   - Multi-tag filtering for precise game discovery
+
+## Deployment Instructions
+
+### Prerequisites
+- Docker and Docker Compose installed on your system
+- Git for cloning the repository
+
+### Steps to Deploy
+
+1. Clone the repository:
    ```
-En Linux verificar que tenemos instalado compose
-   ```bash
-sudo apt update
-   ``` 
-   ```bash
-sudo apt upgrade
-   ``` 
-   ```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-   ``` 
-   ```bash
-sudo chmod +x /usr/local/bin/docker-compose
-   ``` 
-   ```bash
-sudo docker-compose --version
-   ``` 
-
-Crea el grupo de docker sino existe
-   ```bash
-sudo groupadd docker
-   ``` 
-   ```bash
-sudo usermod -aG docker $USER
-   ``` 
-   ```bash
-su -s ${USER}
+   git clone <repository-url>
+   cd Deploy_05_Fullstack_Videojuegos
    ```
 
-   ```bash
-docker run hello-world
-   ``` 
-
-
-
-## 3. Desplegar la Aplicación
-Desde la carpeta del proyecto, ejecutamos compose para construir la imagen en segundo plano:
-
-   ```bash
-       sudo docker compose up -d --build
-   ``` 
-
--d levanta los contenedores en segundo plano.
-
-Comprueba que todo esté corriendo:
-   ```bash
-sudo docker-compose ps
-   ``` 
-(Opcional) Para ver los logs en tiempo real:
- ```bash
-sudo docker-compose logs -f
-   ``` 
-
-## 4. Uso de la Aplicación
-Accede a la aplicación en http://localhost:8080 (o el puerto configurado).
-Revisa la documentación o código fuente para conocer las rutas disponibles.
-
-PROBLEMAS EN LINUX POR 
-Los containers se han caido por falta de permisos
-sudo docker ps -a
-El container base de datos lo podemos arrancar por su nombre 
-  ```bash
-sudo docker start u3_1-base_datos-1  
+2. Run with Docker Compose:
    ```
-Inicializamos la Base de datos. Entramos en el contenedor y una vez que ya tenemos el nombre del usuario para la conexión podemos levantar el contenedor backend.
-  ```bash
-sudo docker start u3_1-backend-1
-   ```
-## 5. Configurar el usuario de acceso
-sudo docker exec -it u3_1-base_datos-1 mongosh -u root -p supersecreta --authenticationDatabase admin
-  ```bash
-use admin
-   ```
- ```bash
-db.createUser({
-  user: "daw",
-  pwd: "abc123.",
-  roles: ["userAdminAnyDatabase", "readWriteAnyDatabase"]
-})
-   ```
-Nos devuelve {ok:1}
-
-Volvemos a levantar con 
- ```bash
-sudo docker compose up 
+   docker-compose up -d
    ```
 
-## 6. Parar y Limpiar
-Eliminamos los dockers con , redes y volúmenes
- ```bash
-                sudo docker compose down -v 
-   ```
-Eliminamos todos los recursos no utilizados 
- ```bash
-               sudo docker system prune --volumes -a
-   ``` 
-Verificamos todo el sistema
- ```bash
-              sudo docker system df
-              sudo docker volume prune -a -f
+3. Access the application:
+   - Frontend: http://localhost:8080
+   - Backend API: http://localhost:3000
 
-    ``` 
-Test con 
-https://github.com/jchook/stable-diffusion-webui-docker
-https://github.com/ricardobalk/streamlit-ollama
+### Docker Services
 
-## Authors
+The application is containerized using Docker with the following services:
 
-- [@alixiacf](https://www.github.com/alixiacf)
+1. **Frontend Container**
+   - Builds from the `./frontend` directory
+   - Exposed on port 8080
+   - Connects to the backend service
 
+2. **Backend Container**
+   - Builds from the `./backend` directory
+   - Exposed on port 3000
+   - Connects to the MongoDB database
+
+3. **Database Container**
+   - Uses the official MongoDB image
+   - Exposed on port 27017 (default MongoDB port)
+   - Persists data using Docker volumes
+
+## API Endpoints
+
+The backend provides the following main API endpoints:
+
+- `/usuarios` - User management (GET, POST, PUT, DELETE)
+- `/usuarios/:id/juegos` - User game library management
+- `/juegos` - Game catalog access
+- `/juegos/buscar` - Game search by tags
+- `/recomendaciones/:userId` - Personalized game recommendations
+- `/recomendaciones` - General recommendations based on specific tags
+
+## Technologies Used
+
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS
+- **Backend**: Node.js, Express.js, Mongoose
+- **Database**: MongoDB
+- **Containerization**: Docker, Docker Compose
+- **Network**: Docker Bridge Network for service communication
+
+## Data Persistence
+
+The application uses Docker volumes to persist MongoDB data across container restarts. User profiles and their game libraries will be maintained even if the containers are restarted.

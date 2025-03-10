@@ -1,15 +1,13 @@
-# Gemma2 Chat Application with GPU Support
-Deploy_01_APP_LocalAI_GPU 
+# Gemma2 Chat Application with CPU Support
 
-This project implements a web-based chat interface for interacting with Google's Gemma2 language model running locally through Ollama with GPU acceleration.
+This project implements a web-based chat interface for interacting with Google's Gemma2 language model running locally through Ollama without GPU acceleration.
 
 ## Overview
 
 The application consists of three main components:
-- **Ollama service**: Runs the Gemma2 AI model with GPU acceleration
+- **Ollama service**: Runs the Gemma2 AI model without GPU acceleration
 - **Python backend**: Provides a web interface using Gradio and communicates with Ollama
-- **Docker infrastructure**: Orchestrates the components with proper networking and GPU passthrough
-
+- **Docker infrastructure**: Orchestrates the components with proper networking
 ## Features
 
 - Local deployment of Gemma2 language model
@@ -20,9 +18,7 @@ The application consists of three main components:
 ## Requirements
 
 - Docker and Docker Compose
-- NVIDIA GPU with CUDA support
-- NVIDIA Container Toolkit installed
-- At least 8GB of GPU VRAM recommended for optimal performance
+
 
 ## Architecture
 
@@ -33,7 +29,6 @@ The application is orchestrated using Docker Compose with the following services
 1. **Ollama Service**:
    - Based on the `ollama/ollama` image
    - Custom build process that adds the `run.sh` script
-   - GPU passthrough configured for acceleration
    - Automatically downloads the Gemma2 model on startup
    - Exposes port 11434 for API access
 
@@ -59,21 +54,16 @@ Both services communicate over a bridged network called `mynetwork`, with the we
    - Takes user input and sends it to the Ollama API
    - Streams responses back to the user interface
 
-3. The GPU acceleration:
-   - NVIDIA drivers are passed through to the Ollama container
-   - Enables hardware acceleration for inference
-   - Significantly improves response times
+
 
 ## How to Run
 
 1. Clone this repository
-2. Make sure NVIDIA Container Toolkit is properly installed
 3. Run `docker-compose up -d`
 4. Access the chat interface at `http://localhost:7860`
 
 ## Troubleshooting
 
-- If you encounter GPU-related errors, verify that NVIDIA Container Toolkit is properly installed
 - For model download issues, check your internet connection and available disk space
 - If the web interface cannot connect to Ollama, ensure both containers are running properly
 
