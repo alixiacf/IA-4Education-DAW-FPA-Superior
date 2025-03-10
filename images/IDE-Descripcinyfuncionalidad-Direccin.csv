@@ -1,0 +1,6 @@
+"IDE","Descripción y funcionalidad","Dirección"
+"bolt.new","Herramienta de IA para crear front-end. Genera proyectos a partir de descripciones y permite instalar dependencias.","bolt.new"
+"v0.dev","Generador de UI impulsado por IA. Crea interfaces personalizadas con soporte para TypeScript y React.","v0.dev"
+"CodeSandbox","Editor de código en línea para front-end. Soporta npm, TypeScript y recarga en caliente.","codesandbox.io"
+"Replit","IDE colaborativo en el navegador. Soporta más de 50 lenguajes y permite publicar proyectos instantáneamente.","replit.com"
+"GitHub Copilot","Asistente de codificación basado en IA. Sugiere líneas de código en varios editores.","github.com/copilot"

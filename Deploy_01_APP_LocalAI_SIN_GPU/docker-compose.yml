@@ -1,0 +1,33 @@
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    networks:
+      - mynetwork
+    entrypoint: ["/bin/sh", "/app/run.sh"]  # Esto falla si `run.sh` no está en `/app`
+    working_dir: /app  # Asegurar que trabajamos en el directorio correcto
+    build:
+      context: ./ollama  # 🛠 Asegurar que la carpeta correcta se usa en la construcción
+      dockerfile: Dockerfile
+
+  app:
+    build: ./backend
+    container_name: app
+    restart: unless-stopped
+    depends_on:
+      - ollama  # Asegura que Ollama inicie primero
+    ports:
+      - "7860:7860"
+    networks:
+      - mynetwork
+volumes:
+  ollama_data:
+networks:
+  mynetwork:
+    driver: bridge
