@@ -1,4 +1,4 @@
-# IA-First Design for Web Developers (DAW)
+# AI-First Design for Web Developers (DAW)
 New paradigm in web development, one where AI is not just a feature but an integral part of the process, empowering developers to build better, faster, and more intelligently.
 
 This repository is dedicated to exploring and implementing an **IA-First** design approach for Full-Stack Web Development, specifically tailored for Developers of Web Applications (DAW) in Vocational Training (FP). It contains a collection of tools, techniques, and implementations that leverage Artificial Intelligence to enhance the entire web development workflow.
