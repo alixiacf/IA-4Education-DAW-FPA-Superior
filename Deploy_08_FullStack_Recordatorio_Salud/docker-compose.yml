@@ -1,0 +1,52 @@
+services:
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev -- --host"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    image: node:20-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/healthreminder
+      - JWT_SECRET=super-secret-jwt-token-with-at-least-32-characters
+      - PORT=3000
+    volumes:
+      - ./backend:/app
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=healthreminder
+    volumes:
+      - mongo_data:/data/db
+      - ./volumes/mongo/init:/docker-entrypoint-initdb.d
+    command: mongod --bind_ip_all
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
