@@ -1,4 +1,4 @@
-# Aplicación de Recordatorio de Salud
+# Aplicación de Recordatorio de Salud Demo
 
 Esta aplicación permite a los usuarios gestionar sus citas médicas y recibir recordatorios.
 
