@@ -1,56 +1,78 @@
-# FullStack Recados Application
+# Aplicación FullStack Recados
 
-A task and appointment management system with notifications, built using a microservices architecture.
+Un sistema de gestión de tareas y citas con notificaciones, construido con una arquitectura de microservicios.
 
-## Overview
+## Descripción General
 
-This application allows users to:
-- Register tasks and appointments
-- Get notifications for upcoming events
-- Manage their personal schedule effectively
+Esta aplicación permite a los usuarios:
+- Registrar tareas y citas
+- Recibir notificaciones de eventos próximos
+- Gestionar su agenda personal de manera efectiva
 
-## Architecture
+## Arquitectura
 
-The application is built using a microservices approach with two main components:
-- **Frontend**: React application with TypeScript and Tailwind CSS
-- **Backend**: Node.js API server
+La aplicación está construida con un enfoque de microservicios y consta de dos componentes principales:
+- **Frontend**: Aplicación en React con TypeScript y Tailwind CSS
+- **Backend**: Servidor API desarrollado con Node.js
 
-## Deployment
+## Despliegue
 
-The application is containerized using Docker and deployed using Docker Compose, making it easy to set up and run in any environment.
+La aplicación está contenedorizada con Docker y se despliega utilizando Docker Compose, lo que facilita su configuración y ejecución en cualquier entorno.
 
-### Prerequisites
+### Requisitos Previos
 
-- Docker and Docker Compose installed on your system
+- Tener instalados Docker y Docker Compose en el sistema
 
-### Steps to Deploy
+### Pasos para Desplegar
 
-1. Clone the repository
-2. Navigate to the project directory
-3. Run the following command:
+1. Clonar el repositorio:
+   ```bash
+   git clone <repository-url>
+   cd Deploy_07_FullStack_Recados
    ```
+
+2. Ejecutar el siguiente comando:
+   ```bash
    docker-compose up -d
    ```
 
-This will:
-- Build the frontend and backend containers
-- Set up the network between services
-- Start all services in detached mode
+Esto hará lo siguiente:
+- Construir los contenedores de frontend y backend
+- Configurar la red entre los servicios
+- Iniciar todos los servicios en modo desacoplado
 
-## Microservices Benefits
+### Detener la Aplicación
+Para detener la aplicación:
+```bash
+docker-compose down
+```
 
-The microservices architecture provides several advantages:
-- **Scalability**: Each service can be scaled independently
-- **Maintainability**: Services can be developed and deployed separately
-- **Resilience**: Failure in one service doesn't bring down the entire application
-- **Technology flexibility**: Different technologies can be used for different services
+Para detener y eliminar los volúmenes de datos (esto borrará toda la información almacenada):
+```bash
+docker-compose down -v
+```
 
-## Accessing the Application
+## Beneficios de la Arquitectura de Microservicios
 
-After deployment, the application can be accessed at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+La arquitectura de microservicios ofrece varias ventajas:
+- **Escalabilidad**: Cada servicio puede escalarse de manera independiente
+- **Mantenibilidad**: Los servicios pueden desarrollarse y desplegarse por separado
+- **Resiliencia**: Un fallo en un servicio no afecta a toda la aplicación
+- **Flexibilidad Tecnológica**: Se pueden utilizar diferentes tecnologías para distintos servicios
 
-## Notification System
+## Acceso a la Aplicación
 
-The application includes a simple notification system that alerts users of upcoming tasks and appointments.
+Después del despliegue, la aplicación estará disponible en:
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend API**: [http://localhost:5000](http://localhost:5000)
+
+## Sistema de Notificaciones
+
+La aplicación incluye un sistema de notificaciones que alerta a los usuarios sobre tareas y citas próximas, mejorando la organización y gestión del tiempo.
+
+## Tecnologías Utilizadas
+
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express
+- **Base de Datos**: MongoDB
+- **Contenedorización**: Docker, Docker Compose
