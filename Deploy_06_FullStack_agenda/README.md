@@ -1,85 +1,91 @@
 # Task Management Application
 
-A full-stack application for managing tasks with estimated and actual execution times.
+Aplicación full-stack para la gestión de tareas con seguimiento de tiempos estimados y reales.
 
-## Overview
+## Características
 
-This application allows users to:
-- Create and manage tasks
-- Track estimated time for completion
-- Record actual time spent on tasks
-- Visualize the difference between estimated and real execution times
+- Creación y gestión de tareas.
+- Registro del tiempo estimado de finalización.
+- Seguimiento del tiempo real empleado en cada tarea.
+- Visualización de la diferencia entre el tiempo estimado y el real.
+- Interfaz intuitiva y fácil de usar.
 
-## Architecture
+## Tecnologías Utilizadas
 
-The application follows a microservices architecture with three main components:
+- **Frontend**: React, TypeScript, Vite, Zustand, Tailwind CSS.
+- **Backend**: Node.js, Express.
+- **Base de Datos**: MongoDB.
+- **Contenerización**: Docker, Docker Compose.
 
-### Frontend
-- React application with TypeScript
-- Vite as build tool
-- Zustand for state management
-- TailwindCSS for styling
-- Components for task management (TaskList, TaskCard, NewTaskModal)
+## Estructura del Proyecto
 
-### Backend
-- Node.js with Express framework
-- REST API for CRUD operations on tasks
-- MongoDB connection for data persistence
-- API endpoints for task management
+```
+├── backend/               # API backend en Node.js
+│   ├── src/               # Código fuente
+│   │   ├── models/        # Modelos de base de datos
+│   │   ├── routes/        # Rutas de la API
+│   │   └── controllers/   # Controladores de la API
+│   └── Dockerfile         # Configuración de Docker para el backend
+├── frontend/              # Aplicación frontend en React
+│   ├── src/               # Código fuente
+│   │   ├── components/    # Componentes de UI
+│   │   ├── pages/         # Páginas principales
+│   │   ├── store/         # Estado global con Zustand
+│   │   └── services/      # Servicios para comunicación con la API
+│   └── Dockerfile         # Configuración de Docker para el frontend
+└── docker-compose.yml     # Configuración de Docker Compose
+```
 
-### Database
-- MongoDB for storing task data
-- Persistent volume for data storage
+## Instalación y Uso
 
-## Deployment
+### Requisitos Previos
 
-The application is containerized using Docker and can be deployed using Docker Compose.
+- Docker y Docker Compose instalados en tu sistema.
+- Git para el control de versiones.
 
-### Prerequisites
-- Docker and Docker Compose installed on your system
-- Git (for cloning the repository)
+### Instalación
 
-### Deployment Steps
-
-1. Clone the repository:
+1. Clonar el repositorio:
    ```bash
    git clone <repository-url>
    cd Deploy_06_FullStack_agenda
    ```
 
-2. Start the application using Docker Compose:
+2. Iniciar la aplicación con Docker Compose:
    ```bash
    docker-compose up -d
    ```
 
-3. Access the application:
-   - Frontend: http://localhost:8080
-   - Backend API: http://localhost:3000
+3. Acceder a la aplicación:
+   - **Frontend**: [http://localhost:8080](http://localhost:8080)
+   - **Backend API**: [http://localhost:3000](http://localhost:3000)
 
-### Stopping the Application
+### Detener la Aplicación
 
-To stop the application:
+Para detener la aplicación:
 ```bash
 docker-compose down
 ```
 
-To stop and remove volumes (will delete all data):
+Para detener y eliminar volúmenes (borrar todos los datos almacenados):
 ```bash
 docker-compose down -v
 ```
 
-## Development
+## Variables de Entorno
 
-For development purposes, the docker-compose configuration mounts the local directories as volumes, allowing for live-reload during development.
+- **Frontend**:
+  - `VITE_API_URL`: URL de la API backend.
 
-## Environment Variables
+- **Backend**:
+  - `MONGO_URI`: Cadena de conexión a MongoDB.
 
-- Frontend:
-  - `VITE_API_URL`: URL to connect to the backend API
+## Desarrollo
 
-- Backend:
-  - `MONGO_URI`: MongoDB connection string
+Para desarrollo, la configuración de `docker-compose` monta los directorios locales como volúmenes, permitiendo la recarga en vivo al realizar cambios en el código.
 
-## Services Communication
+## Comunicación entre Servicios
 
-The frontend communicates with the backend through REST API calls, while the backend interacts with the MongoDB database for data persistence.
+- El **frontend** se comunica con el **backend** mediante llamadas a la API REST.
+- El **backend** interactúa con la base de datos **MongoDB** para el almacenamiento y gestión de tareas.
+
