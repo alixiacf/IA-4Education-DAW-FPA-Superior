@@ -43,14 +43,22 @@ export async function searchCars(query: string): Promise<Car[]> {
   return response.json();
 }
 
+import type { CalculationInput, CalculationResult } from '../types';
+
 export async function calculateCosts(input: CalculationInput): Promise<CalculationResult> {
   const params = new URLSearchParams({
     kilometros: input.kilometros.toString(),
     consumo: input.consumo.toString(),
     precio: input.precio.toString(),
     viajeros: input.viajeros.toString(),
+    tipoCombustible: input.tipoCombustible
   });
+
   const response = await fetch(`${API_BASE_URL}/calcular?${params}`);
-  if (!response.ok) throw new Error('Failed to calculate costs');
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Error al calcular costos');
+  }
+
   return response.json();
 }

@@ -449,53 +449,46 @@ app.get('/coches/detalle', async (req, res) => {
 // GET - Endpoint de calculadora
 app.get('/calcular', (req, res) => {
   try {
-    const { kilometros, consumo, precio, viajeros } = req.query;
+    const { kilometros, consumo, precio, viajeros, tipoCombustible } = req.query;
     
     // Convertir los parámetros a números
     const kmNum = Number(kilometros);
     const consumoNum = Number(consumo);
     const precioNum = Number(precio);
-    const viajerosNum = Number(viajeros) || 1;
+    const viajerosNum = Number(viajeros);
     
-    // Validaciones
-    if (isNaN(kmNum) || isNaN(consumoNum) || isNaN(precioNum)) {
-      return res.status(400).json({ error: 'Los parámetros deben ser números válidos' });
+    // Validar los parámetros
+    if (isNaN(kmNum) || isNaN(consumoNum) || isNaN(precioNum) || isNaN(viajerosNum)) {
+      return res.status(400).json({ error: 'Parámetros inválidos' });
     }
     
-    if (kmNum <= 0) {
-      return res.status(400).json({ error: 'Los kilómetros deben ser un valor positivo' });
+    if (kmNum <= 0 || consumoNum <= 0 || precioNum <= 0 || viajerosNum <= 0) {
+      return res.status(400).json({ error: 'Los valores deben ser mayores que 0' });
     }
-    
-    if (consumoNum < 0) {
-      return res.status(400).json({ error: 'El consumo medio debe ser un valor no negativo' });
+
+    // Calcular el costo total según el tipo de combustible
+    let precioTotal;
+    if (tipoCombustible === 'Eléctrico') {
+      // Para vehículos eléctricos, el consumo está en kWh/100km y el precio en €/kWh
+      precioTotal = (kmNum / 100) * consumoNum * precioNum;
+    } else {
+      // Para vehículos de gasolina o diésel, el consumo está en L/100km y el precio en €/L
+      precioTotal = (kmNum / 100) * consumoNum * precioNum;
     }
-    
-    if (precioNum <= 0) {
-      return res.status(400).json({ error: 'El precio del combustible debe ser un valor positivo' });
-    }
-    
-    if (viajerosNum < 1) {
-      return res.status(400).json({ error: 'Se necesita al menos un viajero' });
-    }
-    
-    // Calcular el precio total y por viajero
-    const precioTotal = (kmNum / 100) * consumoNum * precioNum;
+
     const precioPorViajero = precioTotal / viajerosNum;
     
-    console.log(`Cálculo realizado: ${kmNum}km, ${consumoNum}L/100km, ${precioNum}€/L, ${viajerosNum} viajeros`);
-    console.log(`Resultado: Total ${precioTotal}€, Por viajero ${precioPorViajero}€`);
-    
-    return res.json({
+    res.json({
       kilometros: kmNum,
       consumoMedio: consumoNum,
       precioCombustible: precioNum,
       viajeros: viajerosNum,
-      precioTotal: precioTotal,
-      precioPorViajero: precioPorViajero
+      precioTotal,
+      precioPorViajero
     });
   } catch (error) {
-    console.error('Error en el cálculo:', error);
-    return res.status(500).json({ error: 'Error al realizar el cálculo' });
+    console.error('Error al calcular:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
 
