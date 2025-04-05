@@ -29,7 +29,7 @@ export default function PlaceForm({ location, type, onSubmit, onClose }: PlaceFo
               Location
             </label>
             <div className="text-sm text-gray-600">
-              Lat: {location.lat.toFixed(6)}, Lng: {location.lng.toFixed(6)}
+              Latitud: {location.lat.toFixed(6)}, Longitud: {location.lng.toFixed(6)}
             </div>
           </div>
           
