@@ -38,7 +38,8 @@ This repository is designed for:
 * **AI Enthusiasts:** Anyone
 
 @autores: 
-Alicia Colmenero Fernandez  Teacher Informatic DAW Superior FPA IEs Chan Do Monte 2025 <br>
+Alicia Colmenero Fernandez  Teacher Informatic<br>
+DAW Superior FPA IEs Chan Do Monte   <br>
 Manuel Nicolás Acebedo Dominguez <br>
 Daniel Cancela Rodríguez <br>
 Martín Comendeiro Gonzalez  <br>
