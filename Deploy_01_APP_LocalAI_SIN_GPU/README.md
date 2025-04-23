@@ -1,72 +1,80 @@
-# Gemma2 Chat Application with CPU Support
+Aplicación de Chat Gemma2 con Soporte para CPU
 
-This project implements a web-based chat interface for interacting with Google's Gemma2 language model running locally through Ollama without GPU acceleration.
+Este proyecto implementa una aplicación web de chat que permite interactuar con el modelo de lenguaje Gemma2 de Google, ejecutado localmente a través de Ollama sin necesidad de una GPU. Está diseñado para proporcionar una experiencia de uso fluida y accesible en cualquier sistema que cumpla con los requisitos mínimos.
 
-## Overview
+📌 Características Principales
+✅ Implementación local del modelo Gemma2, sin depender de servidores en la nube.
+✅ Ejecución basada en CPU, ideal para sistemas sin aceleración por GPU.
+✅ Interfaz web intuitiva basada en Gradio, accesible desde el navegador.
+✅ Configuración con Docker, lo que simplifica la instalación y ejecución.
+✅ Arquitectura modular, con separación clara entre backend y el servicio de IA.
+✅ Automatización de despliegue, asegurando una instalación sencilla con un solo comando.
 
-The application consists of three main components:
-- **Ollama service**: Runs the Gemma2 AI model without GPU acceleration
-- **Python backend**: Provides a web interface using Gradio and communicates with Ollama
-- **Docker infrastructure**: Orchestrates the components with proper networking
-## Features
+🛠️ Requisitos Previos
+Para ejecutar correctamente la aplicación, asegúrate de contar con lo siguiente en tu sistema:
+Docker (última versión recomendada).
+Docker Compose (para la gestión de los contenedores).
+Conexión a internet para la descarga inicial del modelo.
+Al menos 4 GB de RAM disponibles para una ejecución óptima en CPU.
 
-- Local deployment of Gemma2 language model
-- GPU acceleration for faster inference
-- Simple web chat interface
-- Containerized setup for easy deployment
+📂 Estructura del Proyecto
+El proyecto está organizado en los siguientes componentes:
 
-## Requirements
+📁 backend/ → Contiene el código fuente de la API y la interfaz web.
+📁 config/ → Archivos de configuración y scripts necesarios para la ejecución.
+📁 docker/ → Configuración y archivos para la gestión de contenedores.
+📁 models/ → Modelos de lenguaje descargados y almacenados localmente.
+📜 docker-compose.yml → Archivo de configuración para ejecutar los contenedores.
+📜 README.md → Documentación del proyecto.
 
-- Docker and Docker Compose
+⚙️ Arquitectura del Sistema
+La aplicación utiliza Docker Compose para orquestar los diferentes servicios:
 
+1️⃣ Servicio de Ollama (Inteligencia Artificial)
+Basado en la imagen oficial ollama/ollama.
+Descarga y ejecuta automáticamente el modelo Gemma2 al iniciarse.
+Expone la API en el puerto 11434.
+Contiene un script run.sh que gestiona la inicialización.
 
-## Architecture
+2️⃣ Backend y WebApp
+Implementado en Python utilizando Gradio para la interfaz de usuario.
+Actúa como puente entre el usuario y el servicio Ollama.
+Expone la aplicación web en el puerto 7860.
 
-### Docker Compose Configuration
+3️⃣ Red y Comunicación
+Ambos servicios están conectados a través de una red Docker llamada mynetwork.
+El backend depende del servicio Ollama, asegurando el orden de inicio adecuado.
 
-The application is orchestrated using Docker Compose with the following services:
+🚀 Instalación y Ejecución
+Sigue estos pasos para poner en marcha la aplicación en tu sistema:
 
-1. **Ollama Service**:
-   - Based on the `ollama/ollama` image
-   - Custom build process that adds the `run.sh` script
-   - Automatically downloads the Gemma2 model on startup
-   - Exposes port 11434 for API access
+1️⃣ Clonar el Repositorio
+git clone https://github.com/tuusuario/IA-Chat-Gemma2.git
+cd IA-Chat-Gemma2
 
-2. **Web Application**:
-   - Python-based backend using Gradio
-   - Provides a user-friendly chat interface
-   - Communicates with Ollama via its API
-   - Exposes port 7860 for web access
+2️⃣ Ejecutar los Contenedores con Docker Compose
+docker-compose up -d
 
-### Network Configuration
+3️⃣ Acceder a la Aplicación
+Abre tu navegador y dirígete a:
+🔗 http://localhost:7860
 
-Both services communicate over a bridged network called `mynetwork`, with the web application configured to depend on the Ollama service to ensure proper startup order.
+💡 Cómo Funciona
+1️⃣ El servicio Ollama se inicia y descarga el modelo Gemma2 automáticamente.
+2️⃣ La API backend toma las consultas del usuario y las envía a Ollama.
+3️⃣ Ollama procesa la consulta y devuelve una respuesta generada por IA.
+4️⃣ La respuesta se muestra en la interfaz web de Gradio en tiempo real.
 
-## How It Works
+🛠️ Resolución de Problemas
+🔴 Problema: "No se puede descargar el modelo"
+✔️ Verifica tu conexión a internet y el espacio disponible en el disco.
 
-1. The Ollama container starts and runs the `run.sh` script which:
-   - Starts the Ollama service
-   - Downloads the Gemma2 model automatically
-   - Keeps the container running
+🔴 Problema: "La interfaz web no carga"
+✔️ Asegúrate de que ambos contenedores están en ejecución con docker ps.
 
-2. The Python backend container:
-   - Provides a web UI through Gradio
-   - Takes user input and sends it to the Ollama API
-   - Streams responses back to the user interface
+🔴 Problema: "No se puede conectar a Ollama"
+✔️ Reinicia el servicio con:
+      docker-compose restart
 
-
-
-## How to Run
-
-1. Clone this repository
-3. Run `docker-compose up -d`
-4. Access the chat interface at `http://localhost:7860`
-
-## Troubleshooting
-
-- For model download issues, check your internet connection and available disk space
-- If the web interface cannot connect to Ollama, ensure both containers are running properly
-
-## License
-
-This project is open source and available for educational and personal use.
+📜 Licencia
+Este proyecto es de código abierto y puede utilizarse con fines educativos y personales.

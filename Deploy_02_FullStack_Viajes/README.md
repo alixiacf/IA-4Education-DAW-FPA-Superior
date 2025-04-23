@@ -1,139 +1,99 @@
-# Travel Map Application
+Aplicación de Mapa de Viajes
 
-A full-stack web application for tracking visited places and creating travel wishlists. Users can mark locations they've visited or wish to visit on an interactive map, share their experiences, and view other travelers' adventures.
+Una aplicación web full-stack para rastrear lugares visitados y crear listas de lugares deseados para viajar. Los usuarios pueden marcar en un mapa interactivo los lugares que han visitado o desean visitar, compartir sus experiencias y ver las aventuras de otros viajeros.
 
-## 🌟 Features
+🌟 Características
+📍 Marcar lugares visitados y deseados en un mapa interactivo.
+👥 Soporte multiusuario con perfiles individuales.
+🌎 Ver todos los marcadores de viaje de los usuarios en una vista consolidada.
+⭐ Calificar y reseñar lugares visitados.
+🗺️ Interfaz de mapa interactivo utilizando Leaflet.
+💫 UI hermosa y responsiva con Tailwind CSS.
 
-- 📍 Mark visited and desired locations on an interactive map
-- 👥 Multi-user support with individual profiles
-- 🌎 View all users' travel marks in a consolidated view
-- ⭐ Rate and review visited places
-- 🗺️ Interactive map interface using Leaflet
-- 💫 Beautiful and responsive UI with Tailwind CSS
+🛠️ Tecnología Utilizada
 
-## 🛠️ Technology Stack
+Frontend
+React con TypeScript para una experiencia de usuario rica y tipada.
+Leaflet para el mapa interactivo.
+Tailwind CSS para la estilización rápida y responsiva.
+Lucide React para los iconos.
+Vite como herramienta de construcción.
 
-### Frontend
-- React with TypeScript
-- Leaflet for maps
-- Tailwind CSS for styling
-- Lucide React for icons
-- Vite as build tool
+Backend
+Node.js con Express para construir una API RESTful.
+MongoDB para almacenamiento de datos de usuarios y lugares.
+Arquitectura API RESTful.
 
-### Backend
-- Node.js with Express
-- MongoDB for data storage
-- RESTful API architecture
+🚀 Primeros Pasos
+Requisitos Previos
+Asegúrate de tener instalados los siguientes programas:
 
-## 🚀 Getting Started
+Docker y Docker Compose para la orquestación de contenedores.
+Git para clonar el repositorio.
+Instalación
+Clona el repositorio:
+git clone https://github.com/tuusuario/travel-map.git
+cd travel-map
 
-### Prerequisites
+Crea los archivos de configuración:
+Crea un archivo .env en el directorio backend con el siguiente contenido:
+PORT=5000
+MONGO_URI=mongodb://mongo:27017/travelmap
 
-- Docker and Docker Compose
-- Git
+Inicia la aplicación utilizando Docker Compose:
+docker-compose up --build
 
-### Installation
+La aplicación estará disponible en:
+Frontend: http://localhost
+Backend API: http://localhost:5000
+MongoDB: localhost:27017
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/travel-map.git
-   cd travel-map
-   ```
-
-2. Create environment files:
-
-   Create `.env` in the backend directory:
-   ```env
-   PORT=5000
-   MONGO_URI=mongodb://mongo:27017/travelmap
-   ```
-
-3. Start the application using Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
-
-The application will be available at:
-- Frontend: http://localhost
-- Backend API: http://localhost:5000
-- MongoDB: localhost:27017
-
-## 📁 Project Structure
-
-```
+📁 Estructura del Proyecto
 /
-├── frontend/               # React frontend application
-│   ├── src/               # Source files
-│   ├── Dockerfile         # Frontend Docker configuration
-│   └── nginx.conf         # Nginx configuration
-├── backend/               # Node.js backend application
-│   ├── src/              # Source files
-│   └── Dockerfile        # Backend Docker configuration
-└── docker-compose.yml    # Docker Compose configuration
-```
+├── frontend/               # Aplicación frontend en React
+│   ├── src/               # Archivos fuente
+│   ├── Dockerfile         # Configuración de Docker para el frontend
+│   └── nginx.conf         # Configuración de Nginx para el frontend
+├── backend/               # Aplicación backend en Node.js
+│   ├── src/              # Archivos fuente
+│   └── Dockerfile        # Configuración de Docker para el backend
+└── docker-compose.yml    # Configuración de Docker Compose
 
-## 🔄 API Endpoints
+🔄 Endpoints de la API
 
-### Users
-- `GET /api/users` - Get all users
-- `POST /api/users` - Create a new user
+Usuarios
+GET /api/users - Obtener todos los usuarios.
+POST /api/users - Crear un nuevo usuario.
 
-### Places
-- `GET /api/places` - Get all places
-- `GET /api/places/:userId` - Get places for a specific user
-- `POST /api/places` - Create a new place
-- `PUT /api/places/:id` - Update a place
-- `DELETE /api/places/:id` - Delete a place
+Lugares
+GET /api/places - Obtener todos los lugares.
+GET /api/places/:userId - Obtener lugares para un usuario específico.
+POST /api/places - Crear un nuevo lugar.
+PUT /api/places/:id - Actualizar un lugar.
+DELETE /api/places/:id - Eliminar un lugar.
 
-## 🛡️ Development
+🛡️ Desarrollo
+Para ejecutar la aplicación en modo desarrollo, sigue estos pasos:
 
-To run the application in development mode:
+Iniciar el backend:
+cd backend
+npm install
+npm run dev
 
-1. Start the backend:
-   ```bash
-   cd backend
-   npm install
-   npm run dev
-   ```
+Iniciar el frontend:
+cd frontend
+npm install
+npm run dev
 
-2. Start the frontend:
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
+🐳 Comandos de Docker
+Construir y iniciar todos los servicios:
+docker-compose up --build
 
-## 🐳 Docker Commands
+Detener todos los servicios:
+docker-compose down
 
-- Build and start all services:
-  ```bash
-  docker-compose up --build
-  ```
+Ver los logs de los contenedores:
+docker-compose logs -f
 
-- Stop all services:
-  ```bash
-  docker-compose down
-  ```
-
-- View logs:
-  ```bash
-  docker-compose logs -f
-  ```
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## ✨ Acknowledgments
-
-- Map data provided by OpenStreetMap
-- Icons by Lucide React
-- User avatars from Unsplash
+📝 Licencia
+Este proyecto está bajo la Licencia MIT. Puedes ver los detalles en el archivo LICENSE.

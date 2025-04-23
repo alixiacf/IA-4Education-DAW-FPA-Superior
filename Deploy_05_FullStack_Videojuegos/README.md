@@ -1,116 +1,87 @@
-# GameRecommender - Video Games Library and Recommendation System
+# GameRecommender - Sistema de Biblioteca y Recomendación de Videojuegos
 
-A full-stack web application for users to register video games they've played and receive personalized recommendations based on their gaming preferences.
+Una aplicación full-stack para que los usuarios registren los videojuegos que han jugado y reciban recomendaciones personalizadas según sus preferencias.
 
-## Project Overview
+## Características
 
-GameRecommender is a microservices-based application that allows users to:
+- Registro y gestión de usuarios
+- Creación y administración de biblioteca de videojuegos
+- Catálogo de juegos con filtros por géneros
+- Sistema de recomendación basado en etiquetas y preferencias del usuario
+- Interfaz responsiva y fácil de usar
 
-- Create a personal profile and maintain a library of video games they've played
-- Filter and search through a catalog of video games by tags (genres)
-- Receive personalized game recommendations based on their gaming preferences
-- Explore new games similar to ones they've already enjoyed
+## Tecnologías Utilizadas
 
-## Architecture
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS
+- **Backend**: Node.js, Express, Mongoose
+- **Base de Datos**: MongoDB
+- **Containerización**: Docker, Docker Compose
 
-The application follows a microservices architecture with three main components:
+## Estructura del Proyecto
 
-### Frontend
-- Built with React, TypeScript, and Vite
-- Uses Tailwind CSS for styling
-- Implements a responsive, component-based UI
-- Communicates with the backend through RESTful API calls
+```
+├── backend/               # API backend en Node.js
+│   ├── src/               # Código fuente
+│   │   ├── models/        # Modelos de base de datos
+│   │   ├── routes/        # Rutas de la API REST
+│   │   ├── controllers/   # Controladores de la lógica de negocio
+│   └── Dockerfile         # Configuración de Docker para el backend
+├── frontend/              # Aplicación frontend en React
+│   ├── src/               # Código fuente
+│   │   ├── components/    # Componentes de UI
+│   │   ├── pages/         # Páginas de la aplicación
+│   │   ├── services/      # Servicios para llamadas a la API
+│   │   └── types/         # Definiciones de tipos en TypeScript
+│   └── Dockerfile         # Configuración de Docker para el frontend
+└── docker-compose.yml     # Configuración de Docker Compose
+```
 
-### Backend
-- Node.js with Express framework
-- RESTful API for user and game management
-- Game recommendation engine based on tag similarity
-- Database connection management
+## Instalación y Ejecución
 
-### Database
-- MongoDB for data persistence
-- Stores user profiles, game libraries, and game catalog
-- Supports complex queries for recommendation features
+### Prerrequisitos
 
-## Key Features
+- Tener instalados Docker y Docker Compose
+- Git para la gestión de versiones
 
-1. **User Management**
-   - Simple user registration without password requirements
-   - Personal game library management
+### Pasos de Instalación
 
-2. **Game Catalog**
-   - Pre-populated catalog of games with titles, descriptions, images, and tags
-   - Game filtering by genre tags
-
-3. **Recommendation System**
-   - Personalized recommendations based on user's favorite genres
-   - Algorithm that identifies preferred game types
-
-4. **Tag-Based Organization**
-   - Color-coded tag system for easy genre identification
-   - Multi-tag filtering for precise game discovery
-
-## Deployment Instructions
-
-### Prerequisites
-- Docker and Docker Compose installed on your system
-- Git for cloning the repository
-
-### Steps to Deploy
-
-1. Clone the repository:
-   ```
+1. Clonar el repositorio:
+   ```bash
    git clone <repository-url>
    cd Deploy_05_Fullstack_Videojuegos
    ```
 
-2. Run with Docker Compose:
-   ```
+2. Iniciar la aplicación con Docker Compose:
+   ```bash
    docker-compose up -d
    ```
 
-3. Access the application:
-   - Frontend: http://localhost:8080
-   - Backend API: http://localhost:3000
+3. Acceder a la aplicación:
+   - **Frontend**: http://localhost:8080
+   - **Backend API**: http://localhost:3000
 
-### Docker Services
+## Desarrollo
 
-The application is containerized using Docker with the following services:
+Para desarrollar la aplicación localmente:
 
-1. **Frontend Container**
-   - Builds from the `./frontend` directory
-   - Exposed on port 8080
-   - Connects to the backend service
+1. Iniciar los contenedores en modo desarrollo:
+   ```bash
+   docker-compose up
+   ```
 
-2. **Backend Container**
-   - Builds from the `./backend` directory
-   - Exposed on port 3000
-   - Connects to the MongoDB database
+2. Realizar cambios en el código y ver los resultados en tiempo real gracias a los volúmenes configurados en `docker-compose.yml`.
 
-3. **Database Container**
-   - Uses the official MongoDB image
-   - Exposed on port 27017 (default MongoDB port)
-   - Persists data using Docker volumes
+## Despliegue
 
-## API Endpoints
+La aplicación puede desplegarse en cualquier entorno compatible con Docker:
 
-The backend provides the following main API endpoints:
+1. Construir las imágenes listas para producción:
+   ```bash
+   docker-compose build
+   ```
 
-- `/usuarios` - User management (GET, POST, PUT, DELETE)
-- `/usuarios/:id/juegos` - User game library management
-- `/juegos` - Game catalog access
-- `/juegos/buscar` - Game search by tags
-- `/recomendaciones/:userId` - Personalized game recommendations
-- `/recomendaciones` - General recommendations based on specific tags
+2. Subir y desplegar el stack en el proveedor de hosting correspondiente.
 
-## Technologies Used
+## Licencia
 
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS
-- **Backend**: Node.js, Express.js, Mongoose
-- **Database**: MongoDB
-- **Containerization**: Docker, Docker Compose
-- **Network**: Docker Bridge Network for service communication
-
-## Data Persistence
-
-The application uses Docker volumes to persist MongoDB data across container restarts. User profiles and their game libraries will be maintained even if the containers are restarted.
+[Licencia MIT](LICENSE)

@@ -1,81 +1,74 @@
-# Gemma2 Chat Application with GPU Support
+Aplicación de Chat Gemma2 con Soporte para GPU 💬⚡
 
-This project implements a web-based chat interface for interacting with Google's Gemma2 language model running locally through Ollama with GPU acceleration.
+Este proyecto implementa una interfaz de chat basada en la web para interactuar con el modelo de lenguaje Gemma2 de Google, ejecutado localmente a través de Ollama con aceleración GPU.
 
-## Overview
+Descripción General
+La aplicación consta de tres componentes principales:
 
-The application consists of three main components:
-- **Ollama service**: Runs the Gemma2 AI model with GPU acceleration
-- **Python backend**: Provides a web interface using Gradio and communicates with Ollama
-- **Docker infrastructure**: Orchestrates the components with proper networking and GPU passthrough
+Servicio Ollama: Ejecuta el modelo de IA Gemma2 con aceleración GPU.
+Backend en Python: Proporciona una interfaz web usando Gradio y se comunica con Ollama.
+Infraestructura Docker: Orquesta los componentes con la red adecuada y el paso de GPU.
 
-## Features
+Características ✨
+Despliegue local del modelo de lenguaje Gemma2.
+Aceleración GPU para una inferencia más rápida ⚡.
+Interfaz de chat web simple y fácil de usar 💻.
+Configuración en contenedor para un despliegue sencillo 🚀.
 
-- Local deployment of Gemma2 language model
-- GPU acceleration for faster inference
-- Simple web chat interface
-- Containerized setup for easy deployment
+Requisitos 🔧
+Docker y Docker Compose.
+GPU NVIDIA con soporte CUDA 🖥️.
+NVIDIA Container Toolkit instalado.
+Se recomienda tener al menos 8 GB de VRAM en la GPU para un rendimiento óptimo.
 
-## Requirements
+Arquitectura 🏗️
+Configuración de Docker Compose
+La aplicación se orquesta utilizando Docker Compose con los siguientes servicios:
 
-- Docker and Docker Compose
-- NVIDIA GPU with CUDA support
-- NVIDIA Container Toolkit installed
-- At least 8GB of GPU VRAM recommended for optimal performance
+Servicio Ollama:
 
-## Architecture
+Basado en la imagen ollama/ollama.
+Proceso de construcción personalizado que incluye el script run.sh.
+Configuración de paso de GPU para la aceleración 🚀.
+Descarga automática del modelo Gemma2 al iniciar.
+Expone el puerto 11434 para acceso a la API.
+Aplicación Web:
 
-### Docker Compose Configuration
+Backend en Python utilizando Gradio 🐍.
+Proporciona una interfaz de chat amigable para el usuario.
+Se comunica con Ollama a través de su API 🔗.
+Expone el puerto 7860 para acceso web.
 
-The application is orchestrated using Docker Compose with the following services:
+Configuración de Red 🌐
+Ambos servicios se comunican a través de una red puente llamada mynetwork, con la aplicación web configurada para depender del servicio Ollama, asegurando que se inicien en el orden correcto.
 
-1. **Ollama Service**:
-   - Based on the `ollama/ollama` image
-   - Custom build process that adds the `run.sh` script
-   - GPU passthrough configured for acceleration
-   - Automatically downloads the Gemma2 model on startup
-   - Exposes port 11434 for API access
+Funcionamiento ⚙️
+El contenedor de Ollama se inicia y ejecuta el script run.sh, que:
 
-2. **Web Application**:
-   - Python-based backend using Gradio
-   - Provides a user-friendly chat interface
-   - Communicates with Ollama via its API
-   - Exposes port 7860 for web access
+Inicia el servicio Ollama.
+Descarga automáticamente el modelo Gemma2 📥.
+Mantiene el contenedor en ejecución.
+El contenedor del backend en Python:
 
-### Network Configuration
+Proporciona una interfaz web a través de Gradio.
+Recibe la entrada del usuario y la envía a la API de Ollama.
+Muestra las respuestas de la API de vuelta en la interfaz de usuario.
+La aceleración GPU:
 
-Both services communicate over a bridged network called `mynetwork`, with the web application configured to depend on the Ollama service to ensure proper startup order.
+Los controladores NVIDIA se pasan al contenedor Ollama 🎮.
+Habilita la aceleración por hardware para la inferencia.
+Mejora significativamente los tiempos de respuesta ⏱️.
 
-## How It Works
+Cómo Ejecutarlo 🚀
+Clona este repositorio.
+Asegúrate de que el NVIDIA Container Toolkit esté instalado correctamente.
+Ejecuta docker-compose up -d.
+Accede a la interfaz de chat en http://localhost:7860.
 
-1. The Ollama container starts and runs the `run.sh` script which:
-   - Starts the Ollama service
-   - Downloads the Gemma2 model automatically
-   - Keeps the container running
+Solución de Problemas 🛠️
+Si encuentras errores relacionados con la GPU, verifica que el NVIDIA Container Toolkit esté instalado correctamente.
+Si hay problemas al descargar el modelo, revisa tu conexión a Internet 🌐 y el espacio disponible en disco.
+Si la interfaz web no puede conectarse a Ollama, asegúrate de que ambos contenedores estén en ejecución correctamente.
 
-2. The Python backend container:
-   - Provides a web UI through Gradio
-   - Takes user input and sends it to the Ollama API
-   - Streams responses back to the user interface
-
-3. The GPU acceleration:
-   - NVIDIA drivers are passed through to the Ollama container
-   - Enables hardware acceleration for inference
-   - Significantly improves response times
-
-## How to Run
-
-1. Clone this repository
-2. Make sure NVIDIA Container Toolkit is properly installed
-3. Run `docker-compose up -d`
-4. Access the chat interface at `http://localhost:7860`
-
-## Troubleshooting
-
-- If you encounter GPU-related errors, verify that NVIDIA Container Toolkit is properly installed
-- For model download issues, check your internet connection and available disk space
-- If the web interface cannot connect to Ollama, ensure both containers are running properly
-
-## License
-
-This project is open source and available for educational and personal use.
+Licencia 📄
+Este proyecto es de código abierto y está disponible para uso educativo y personal.
