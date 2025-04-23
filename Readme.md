@@ -38,27 +38,27 @@ This repository is designed for:
 * **AI Enthusiasts:** Anyone
 
 @autores: 
-Alicia Colmenero Fernandez  Teacher Informatic DAW Superior FPA IEs Chan Do Monte 2025 | \n
-Manuel Nicolás Acebedo Dominguez \n
-Daniel Cancela Rodríguez \n
-Martín Comendeiro Gonzalez \n
-Noa Fernández Carbia \n
-Javier Ferradas Loira \n
-Jorge Gracia Freire \n
-María García López \n
-Manuel Lavandeira Suarez \n
-Vicente Méndez Lopes \n
-Andrea Noval Mariño \n
-Cristina Panero Louzan \n
-Miguel Piedras Santomne \n
-Hector Alejandro Provenzano Blanco \n
-Anxo Quintana Dopazo \n
-Raúl Ramallo Amoedo \n
-Noé Romero Diaz \n
-Andrés Santos Couso \n
-Pablo Seijo da Concepción \n
-Antonella Touron Gimenez \n
-Anxo Vidal Garcia \n
+Alicia Colmenero Fernandez  Teacher Informatic DAW Superior FPA IEs Chan Do Monte 2025 <br>
+Manuel Nicolás Acebedo Dominguez <br>
+Daniel Cancela Rodríguez <br>
+Martín Comendeiro Gonzalez  <br>
+Noa Fernández Carbia  <br>
+Javier Ferradas Loira  <br>
+Jorge Gracia Freire  <br>
+María García López  <br>
+Manuel Lavandeira Suarez  <br>
+Vicente Méndez Lopes  <br>
+Andrea Noval Mariño  <br>
+Cristina Panero Louzan  <br>
+Miguel Piedras Santomne  <br>
+Hector Alejandro Provenzano Blanco  <br>
+Anxo Quintana Dopazo  <br>
+Raúl Ramallo Amoedo <br>
+Noé Romero Diaz  <br>
+Andrés Santos Couso  <br>
+Pablo Seijo da Concepción  <br>
+Antonella Touron Gimenez  <br>
+Anxo Vidal Garcia  <br>
 
 
 
