@@ -37,7 +37,7 @@ This repository is designed for:
 *   **Educators:** Instructors seeking resources for teaching AI-enhanced web development.
 * **AI Enthusiasts:** Anyone
 
-@autores: 
+@autores: <br>
 Alicia Colmenero Fernandez  Teacher Informatic<br>
 DAW Superior FPA IEs Chan Do Monte   <br>
 Manuel Nicolás Acebedo Dominguez <br>
