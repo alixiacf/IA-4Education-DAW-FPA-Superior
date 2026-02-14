@@ -57,7 +57,7 @@ const GameCard: React.FC<GameCardProps> = ({
                 className="flex items-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-md transition duration-300"
               >
                 <Plus size={16} className="mr-1" />
-                Añadir
+                Añadir tarjeta
               </button>
             ) : (
               <button 
@@ -65,7 +65,7 @@ const GameCard: React.FC<GameCardProps> = ({
                 className="flex items-center bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition duration-300"
               >
                 <X size={16} className="mr-1" />
-                Eliminar
+                Eliminar tarjeta
               </button>
             )}
           </div>
