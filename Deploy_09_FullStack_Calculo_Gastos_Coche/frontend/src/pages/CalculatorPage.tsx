@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Calculator } from 'lucide-react';
 import { calculateCosts } from '../lib/api';
 import type { CalculationInput, CalculationResult } from '../types';
@@ -8,13 +8,14 @@ export function CalculatorPage() {
     kilometros: 0,
     consumo: 0,
     precio: 0,
-    viajeros: 1
+    viajeros: 1,
+    tipoCombustible: 'Gasolina'
   });
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCalculating(true);
     setError(null);
@@ -39,6 +40,22 @@ export function CalculatorPage() {
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
+            <label htmlFor="tipoCombustible" className="block text-sm font-medium text-gray-700 mb-1">
+              Tipo de Combustible
+            </label>
+            <select
+              id="tipoCombustible"
+              value={input.tipoCombustible}
+              onChange={(e) => setInput({ ...input, tipoCombustible: e.target.value as CalculationInput['tipoCombustible'] })}
+              className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            >
+              <option value="Gasolina">Gasolina</option>
+              <option value="Diesel">Diésel</option>
+              <option value="Eléctrico">Eléctrico</option>
+            </select>
+          </div>
+
+          <div>
             <label htmlFor="kilometros" className="block text-sm font-medium text-gray-700 mb-1">
               Kilómetros
             </label>
@@ -55,7 +72,7 @@ export function CalculatorPage() {
 
           <div>
             <label htmlFor="consumo" className="block text-sm font-medium text-gray-700 mb-1">
-              Consumo (L/100km)
+              {input.tipoCombustible === 'Eléctrico' ? 'Consumo (kWh/100km)' : 'Consumo (L/100km)'}
             </label>
             <input
               type="number"
@@ -70,7 +87,7 @@ export function CalculatorPage() {
 
           <div>
             <label htmlFor="precio" className="block text-sm font-medium text-gray-700 mb-1">
-              Precio Combustible (€/L)
+              {input.tipoCombustible === 'Eléctrico' ? 'Precio Electricidad (€/kWh)' : 'Precio Combustible (€/L)'}
             </label>
             <input
               type="number"
@@ -99,39 +116,60 @@ export function CalculatorPage() {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={calculating}
-          className="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-        >
-          {calculating ? 'Calculando...' : 'Calcular Costos'}
-        </button>
+        <div className="mt-6">
+          <button
+            type="submit"
+            disabled={calculating}
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          >
+            {calculating ? 'Calculando...' : 'Calcular Costos'}
+          </button>
+        </div>
       </form>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4 text-red-700 mb-8">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
           {error}
         </div>
       )}
 
       {result && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Resultados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-gray-50 rounded-md">
-              <p className="text-sm text-gray-500">Costo Total</p>
-              <p className="text-2xl font-bold text-gray-900">{result.precioTotal.toFixed(2)}€</p>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-green-900 mb-4">Resultados del Cálculo</h2>
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <dt className="text-sm font-medium text-green-600">Distancia Total</dt>
+              <dd className="mt-1 text-lg font-semibold text-green-900">{result.kilometros} km</dd>
             </div>
-            <div className="p-4 bg-gray-50 rounded-md">
-              <p className="text-sm text-gray-500">Costo por Viajero</p>
-              <p className="text-2xl font-bold text-blue-600">{result.precioPorViajero.toFixed(2)}€</p>
+            <div>
+              <dt className="text-sm font-medium text-green-600">
+                {input.tipoCombustible === 'Eléctrico' ? 'Consumo Medio' : 'Consumo Medio'}
+              </dt>
+              <dd className="mt-1 text-lg font-semibold text-green-900">
+                {result.consumoMedio} {input.tipoCombustible === 'Eléctrico' ? 'kWh/100km' : 'L/100km'}
+              </dd>
             </div>
-          </div>
-          <div className="mt-4 text-sm text-gray-500">
-            <p>Consumo total: {(result.kilometros * result.consumoMedio / 100).toFixed(2)} litros</p>
-            <p>Distancia: {result.kilometros} km</p>
-            <p>Precio combustible: {result.precioCombustible}€/L</p>
-          </div>
+            <div>
+              <dt className="text-sm font-medium text-green-600">
+                {input.tipoCombustible === 'Eléctrico' ? 'Precio Electricidad' : 'Precio Combustible'}
+              </dt>
+              <dd className="mt-1 text-lg font-semibold text-green-900">
+                {result.precioCombustible} {input.tipoCombustible === 'Eléctrico' ? '€/kWh' : '€/L'}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-sm font-medium text-green-600">Viajeros</dt>
+              <dd className="mt-1 text-lg font-semibold text-green-900">{result.viajeros}</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-medium text-green-600">Coste Total</dt>
+              <dd className="mt-1 text-lg font-semibold text-green-900">{result.precioTotal.toFixed(2)} €</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-medium text-green-600">Coste por Viajero</dt>
+              <dd className="mt-1 text-lg font-semibold text-green-900">{result.precioPorViajero.toFixed(2)} €</dd>
+            </div>
+          </dl>
         </div>
       )}
     </div>

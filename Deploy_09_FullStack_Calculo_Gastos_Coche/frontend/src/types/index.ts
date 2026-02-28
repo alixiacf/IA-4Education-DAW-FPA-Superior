@@ -31,6 +31,7 @@ export interface CalculationInput {
   consumo: number;
   precio: number;
   viajeros: number;
+  tipoCombustible: 'Gasolina' | 'Diesel' | 'Eléctrico';
 }
 
 export interface CalculationResult {
